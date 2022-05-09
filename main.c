@@ -10,7 +10,7 @@
 int main() {
 
     Reserve **p = (Reserve **)malloc(MAX_N * sizeof(Reserve *));
-    for (int i = 0; i < 100; i++) {
+    for (int i = 0; i < MAX_N; i++) {
         p[i] = (Reserve *)malloc(MAX_N * sizeof(Reserve));
     }
 
@@ -23,8 +23,7 @@ int main() {
                 ListReservation(p, cnt);
                 break;
             case CREATE:
-                CreateReservation(p[cnt]);
-                cnt++;
+                CreateReservation(p, &cnt, MAX_N);
                 break;
             case SEARCH:
                 SearchReservation(p, cnt);
