@@ -71,7 +71,7 @@ DateTime CalculateDateTime(DateTime *dt, int min) {
     }
 }
 
-int CompareDateTime(DateTime dt1, DateTime dt2) {
+int CompareDateTime(DateTime *dt1, DateTime *dt2) {
     if (dt1->dt_year > dt2->dt_year) {
         return 1;
     } else if (dt1->dt_year < dt2->dt_year) {

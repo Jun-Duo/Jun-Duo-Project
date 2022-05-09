@@ -60,6 +60,8 @@ void DeleteReserve(Reserve *r[], int count) {
 
 int IsValidDateTime(Reserve *r[], int count, int idx) {
     for (int i = 0; i < count; i++) {
+        if (i == idx) continue;
+        if (CompareDateTime(&r[i]->endTime, &r[idx]->startTime) )
     }
 }
 
