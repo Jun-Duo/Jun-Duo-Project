@@ -195,7 +195,6 @@ void DeleteReservation(Reserve *r[], int *count) {
     }
 
     r[deleteIdx]->isValid = false;
-    (*count)--;
 }
 
 bool IsValidDateTimeToReserve(Reserve *r[], int count, int idx) {
