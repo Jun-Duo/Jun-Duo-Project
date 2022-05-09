@@ -2,6 +2,8 @@
 #ifndef __reserve_H__
 #define __reserve_H__
 
+#include <stdbool.h>
+
 #include "dateTime.h"
 #include "field.h"
 
@@ -13,7 +15,6 @@ typedef struct reserve {
     DateTime startTime;
     DateTime endTime;
     char name[MAX_LEN_NAME];
-    int numOfMemebers;
 } Reserve;
 
 // Declaration of CRUD Functions for Reservation
@@ -22,7 +23,7 @@ void ReadReservation(Reserve p);
 void ListReservation(Reserve *r[], int count);
 void UpdateReserve(Reserve *r[], int count);
 void DeleteReserve(Reserve *r[], int count);
-int IsValidDateTime(Reserve *r[], int count, int idx);
+bool IsValidDateTime(Reserve *r[], int count, int idx);
 
 // Definition of CRUD Functions for Reservation
 void CreateReservation(Reserve *r[], int *count, int max_n) {
@@ -58,11 +59,16 @@ void UpdateReserve(Reserve *r[], int count) {
 void DeleteReserve(Reserve *r[], int count) {
 }
 
-int IsValidDateTime(Reserve *r[], int count, int idx) {
+bool IsValidDateTime(Reserve *r[], int count, int idx) {
     for (int i = 0; i < count; i++) {
         if (i == idx) continue;
-        if (CompareDateTime(&r[i]->endTime, &r[idx]->startTime) )
+
+        if (CompareDateTime(&r[i]->startTime, &r[idx]->endTime) == 1 || CompareDateTime(&r[i]->endTime, &r[idx]->startTime) == -1)
+            continue;
+        else
+            return false;
     }
+    return true;
 }
 
 #endif
