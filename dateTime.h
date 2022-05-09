@@ -30,12 +30,12 @@ DateTime CalculateDateTime(DateTime *dt, int min) {
                 if (dt->dt_day >= 29) {
                     switch ((dt->dt_mon - 1) % 12 + 1) {
                         case 2:
-                            if (dt_year % 400 == 0 || (dt_year % 100 != 0 && dt_year % 4 == 0)) { // if leap year
+                            if (dt_year % 400 == 0 || (dt_year % 100 != 0 && dt_year % 4 == 0)) {  // if leap year
                                 if (dt->dt_day >= 30) {
                                     dt->dt_mon++;
                                     dt_day -= 29;
                                 }
-                            } else { // not leap year
+                            } else {  // not leap year
                                 dt->dt_mon++;
                                 dt->dt_day -= 28;
                             }
@@ -65,6 +65,40 @@ DateTime CalculateDateTime(DateTime *dt, int min) {
                     }
                 } else {
                     break;
+                }
+            }
+        }
+    }
+}
+
+int CompareDateTime(DateTime dt1, DateTime dt2) {
+    if (dt1->dt_year > dt2->dt_year) {
+        return 1;
+    } else if (dt1->dt_year < dt2->dt_year) {
+        return -1;
+    } else {
+        if (dt1->dt_mon > dt2->dt_mon) {
+            return 1;
+        } else if (dt1->dt_mon < dt2->dt_mon) {
+            return -1;
+        } else {
+            if (dt1->dt_day > dt2->dt_day) {
+                return 1;
+            } else if (dt1->dt_day < dt2->dt_day) {
+                return -1;
+            } else {
+                if (dt1->dt_hour > dt2->dt_hour) {
+                    return 1;
+                } else if (dt1->dt_hour < dt2->dt_hour) {
+                    return -1;
+                } else {
+                    if (dt1->dt_min > dt2->dt_min) {
+                        return 1;
+                    } else if (dt1->dt_min < dt2->dt_min) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
                 }
             }
         }
