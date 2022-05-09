@@ -7,9 +7,11 @@
 #define N_MENU 7
 
 enum Menu {
-    QUIT,
+    QUIT = 0,
     LIST,
     CREATE,
+    UPDATE,
+    DELETE,
     SEARCH,
     LOAD,
     SAVE
