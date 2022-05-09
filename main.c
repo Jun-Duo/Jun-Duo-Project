@@ -25,6 +25,12 @@ int main() {
             case CREATE:
                 CreateReservation(p, &cnt, MAX_N);
                 break;
+            case UPDATE:
+                UpdateReservation(p, cnt);
+                break;
+            case DELETE:
+                DeleteReservation(p, &cnt);
+                break;
             case SEARCH:
                 SearchReservation(p, cnt);
                 break;

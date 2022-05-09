@@ -15,4 +15,10 @@ const char fieldName[NUM_FIELDS][MAX_LEN_FIELD_NAME] = {
     "평봉필드",
     "히딩크풋살장"};
 
+void PrintFieldList() {
+    for (int i = 0; i < NUM_FIELDS; i++) {
+        printf("%d - %s\n", i + 1, fieldName[i]);
+    }
+}
+
 #endif
