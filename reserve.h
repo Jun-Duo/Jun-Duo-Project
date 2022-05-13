@@ -48,17 +48,15 @@ void CreateReservation(Reserve *r[], int *count, int max_n) {
     r[*count]->name[strlen(r[*count]->name) - 1] = '\0';
 
     // Input Field for reserve
-    int _int_field;
     for (;;) {
         PrintFieldList();  // Print Field List
         printf("예약할 필드를 선택해주세요.: ");
-        scanf("%d", &_int_field);
-        if (_int_field >= 1 && _int_field <= NUM_FIELDS) {
-            r[*count]->field = _int_field - 1;
-            break;
-        } else {
+        scanf("%d", &r[*count]->field);
+        if (r[*count]->field < 1 || r[*count]->field > NUM_FIELDS) {
             printf("입력값이 유효하지 않습니다.\n");
             continue;
+        } else {
+            break;
         }
     }
 
@@ -140,17 +138,15 @@ void UpdateReservation(Reserve *r[], int count) {
     r[updateIdx]->name[strlen(r[updateIdx]->name) - 1] = '\0';
 
     // Input Field for reserve
-    int _int_field;
     for (;;) {
         PrintFieldList();  // Print Field List
         printf("수정 예약할 필드를 선택해주세요.: ");
-        scanf("%d", &_int_field);
-        if (_int_field >= 1 && _int_field <= NUM_FIELDS) {
-            r[updateIdx]->field = _int_field - 1;
-            break;
-        } else {
+        scanf("%d", &r[count]->field);
+        if (r[count]->field < 1 || r[count]->field > NUM_FIELDS) {
             printf("입력값이 유효하지 않습니다.\n");
             continue;
+        } else {
+            break;
         }
     }
 

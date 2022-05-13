@@ -12,6 +12,8 @@ typedef struct dt {
 } DateTime;
 
 void SetDateTime(DateTime *dt);
+void SetDate(DateTime *dt);
+void SetTime(DateTime *dt);
 void PrintDateTime(DateTime *dt);
 void CopyDateTime(DateTime *dt1, DateTime *dt2);
 bool IsValidTime(DateTime *dt);
@@ -19,9 +21,19 @@ bool IsValidDate(DateTime *dt);
 bool IsFutureDateTime(DateTime *dt);
 void CalculateDateTime(DateTime *res, DateTime *dt, int min);
 int CompareDateTime(DateTime *dt1, DateTime *dt2);
+int CompareDate(DateTime *dt1, DateTime *dt2);
+int CompareTime(DateTime *dt1, DateTime *dt2);
 
 void SetDateTime(DateTime *dt) {
     scanf("%04d%02d%02d %02d:%02d", &dt->dt_year, &dt->dt_mon, &dt->dt_day, &dt->dt_hour, &dt->dt_min);
+}
+
+void SetDate(DateTime *dt) {
+    scanf("%04d%02d%02d", &dt->dt_year, &dt->dt_mon, &dt->dt_day);
+}
+
+void SetTime(DateTime *dt) {
+    scanf("%02d:%02d", &dt->dt_hour, &dt->dt_min);
 }
 
 void PrintDateTime(DateTime *dt) {
@@ -211,6 +223,44 @@ int CompareDateTime(DateTime *dt1, DateTime *dt2) {
                     }
                 }
             }
+        }
+    }
+}
+
+int CompareDate(DateTime *dt1, DateTime *dt2) {
+    if (dt1->dt_year > dt2->dt_year) {
+        return 1;
+    } else if (dt1->dt_year < dt2->dt_year) {
+        return -1;
+    } else {
+        if (dt1->dt_mon > dt2->dt_mon) {
+            return 1;
+        } else if (dt1->dt_mon < dt2->dt_mon) {
+            return -1;
+        } else {
+            if (dt1->dt_day > dt2->dt_day) {
+                return 1;
+            } else if (dt1->dt_day < dt2->dt_day) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
+}
+
+int CompareTime(DateTime *dt1, DateTime *dt2) {
+    if (dt1->dt_hour > dt2->dt_hour) {
+        return 1;
+    } else if (dt1->dt_hour < dt2->dt_hour) {
+        return -1;
+    } else {
+        if (dt1->dt_min > dt2->dt_min) {
+            return 1;
+        } else if (dt1->dt_min < dt2->dt_min) {
+            return -1;
+        } else {
+            return 0;
         }
     }
 }
