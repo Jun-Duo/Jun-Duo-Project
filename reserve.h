@@ -154,10 +154,10 @@ void UpdateReservation(Reserve *r[], int count) {
     for (;;) {
         printf("수정 예약할 시작시간을 입력해주세요(YYYYMMDD HH:MM): ");
         SetDateTime(&r[updateIdx]->startTime);  // set start time
-        // if (!IsValidDate(&r[count]->startTime)) {
-        //     printf("입력값이 유효하지 않습니다.\n");
-        //     continue;
-        // }
+        if (!IsValidDate(&r[count]->startTime)) {
+            printf("입력값이 유효하지 않습니다.\n");
+            continue;
+        }
         int playTime;
         // Input playTime
         printf("몇 분 동안 빌리시겠습니까?(최대 %d분): ", RESERVE_TIME_LIMIT);
