@@ -265,10 +265,40 @@ void LoadFromFile(Reserve *r[], int *count, int max_n) {  // 파일 입력
         i++;
         (*count)++;
     }
+
+    fclose(input);
+
     printf("데이터 불러오기에 성공했습니다.\n");
 }
 
 void SaveAsFile(Reserve *r[], int count) {  // 파일 출력
+    char outputFileName[MAX_LEN_FILE_NAME];
+    FILE *output = NULL;
+
+    while (getchar() != '\n')
+        ;
+    printf("내보낼 파일 이름을 입력해주세요.: ");
+    fgets(outputFileName, MAX_LEN_FILE_NAME - 1, stdin);
+    outputFileName[strlen(outputFileName) - 1] = '\0';
+
+    output = fopen(outputFileName, "w");
+    if (output == NULL) {
+        printf("파일을 내보내는데 실패했습니다.\n");
+        return;
+    }
+
+    for (int i = 0; i < count; i++) {
+        if (r[i]->isValid == false) continue;
+        fprintf(output, "%s,", r[i]->name);
+        fprintf(output, "%s,", fieldName[r[i]->field]);
+        fprintf(output, "%04d%02d%02d %02d:%02d,", r[i]->startTime.dt_year, r[i]->startTime.dt_mon, r[i]->startTime.dt_day, r[i]->startTime.dt_hour, r[i]->startTime.dt_min);
+        fprintf(output, "%04d%02d%02d %02d:%02d,", r[i]->endTime.dt_year, r[i]->endTime.dt_mon, r[i]->endTime.dt_day, r[i]->endTime.dt_hour, r[i]->endTime.dt_min);
+        fprintf(output, "\n");
+    }
+
+    fclose(output);
+
+    printf("데이터 내보내기에 성공했습니다.\n");
 }
 
 #endif
