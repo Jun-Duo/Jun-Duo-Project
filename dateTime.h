@@ -38,12 +38,12 @@ bool IsValidDate(DateTime *dt) {
                 case 2:
                     if (dt->dt_year % 400 == 0 || (dt->dt_year % 100 != 0 && dt->dt_year % 4 == 0)) {  // if leap year
                         if (dt->dt_day <= 29) {
-                            return IsValidDate(dt);
+                            return IsValidTime(dt);
                         } else
                             return false;
                     } else {  // not leap year
                         if (dt->dt_day <= 28) {
-                            return IsValidDate(dt);
+                            return IsValidTime(dt);
                         } else
                             return false;
                     }
@@ -54,7 +54,7 @@ bool IsValidDate(DateTime *dt) {
                 case 9:
                 case 11:
                     if (dt->dt_day <= 30) {
-                        return IsValidDate(dt);
+                        return IsValidTime(dt);
                     } else
                         return false;
                     break;
@@ -67,7 +67,7 @@ bool IsValidDate(DateTime *dt) {
                 case 10:
                 case 12:
                     if (dt->dt_day <= 31) {
-                        return IsValidDate(dt);
+                        return IsValidTime(dt);
                     } else
                         return false;
                     break;
