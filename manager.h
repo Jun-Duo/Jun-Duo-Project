@@ -224,7 +224,7 @@ void LoadFromFile(Reserve *r[], int *count, int max_n) {
 
     while (getchar() != '\n')
         ;
-    printf("불러 올 파일 이름을 입력해주세요.: "); // input filename to load
+    printf("불러 올 파일 이름을 입력해주세요.(.txt or .csv): "); // input filename to load
     fgets(inputFileName, MAX_LEN_FILE_NAME - 1, stdin);
     inputFileName[strlen(inputFileName) - 1] = '\0';
 
@@ -298,7 +298,7 @@ void SaveAsFile(Reserve *r[], int count) {
 
     while (getchar() != '\n')
         ;
-    printf("내보낼 파일 이름을 입력해주세요.: "); // input filename to save
+    printf("내보낼 파일 이름을 입력해주세요.(.txt or .csv): "); // input filename to save
     fgets(outputFileName, MAX_LEN_FILE_NAME - 1, stdin);
     outputFileName[strlen(outputFileName) - 1] = '\0';
 
