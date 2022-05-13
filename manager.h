@@ -3,7 +3,18 @@
 
 #include "reserve.h"
 
-// Declare Functions
+// enum of search menu
+enum SearchMenu {
+    NAME = 1,
+    DATE_TIME,
+    DATE,
+    TIME,
+    FIELD
+};
+
+/*
+    Function Declarations
+*/
 void SearchReservation(Reserve *r[], int count);
 void SearchReservationName(Reserve *r[], int count);
 void SearchReservationDateTime(Reserve *r[], int count);
@@ -14,9 +25,12 @@ void SearchReservationField(Reserve *r[], int count);
 void LoadFromFile(Reserve *r[], int *count, int max_n);
 void SaveAsFile(Reserve *r[], int count);
 
-// Searching Data Functions
-void SearchReservation(Reserve *r[], int count) {  // 메인 검색
-    int choice;
+/*
+    Function Definitions
+*/
+// Main Search Function
+void SearchReservation(Reserve *r[], int count) {
+    enum SearchMenu choice;
     printf("\n");
     printf("1. 예약자명\n");
     printf("2. 예약 날짜 및 시간\n");
@@ -28,38 +42,39 @@ void SearchReservation(Reserve *r[], int count) {  // 메인 검색
     scanf("%d", &choice);
 
     switch (choice) {
-        case 1:
-            SearchReservationName(r, count);  // 예약자명
+        case NAME:
+            SearchReservationName(r, count);  // search by reservator's name
             break;
-        case 2:
-            SearchReservationDateTime(r, count);  // 예약 날짜 및 시간
+        case DATE_TIME:
+            SearchReservationDateTime(r, count);  // search by reservation date and time
             break;
-        case 3:
-            SearchReservationDate(r, count);  //예약 날짜
+        case DATE:
+            SearchReservationDate(r, count);  // search by reservation date
             break;
-        case 4:
-            SearchReservationTime(r, count);  //예약 시간
+        case TIME:
+            SearchReservationTime(r, count);  // search by reservation time
             break;
-        case 5:
-            SearchReservationField(r, count);  //예약 장소
+        case FIELD:
+            SearchReservationField(r, count);  // search by reservation field
             break;
         default:
             printf("잘못된 입력!\n");
     }
 }
 
-void SearchReservationName(Reserve *r[], int count) {  // 예약자 이름
+// search by reservator's name
+void SearchReservationName(Reserve *r[], int count) {
     char searchName[MAX_LEN_NAME];
     int searchCount = 0;
     while (getchar() != '\n')
         ;
-    printf("검색할 예약자명을 입력해주세요.: ");
+    printf("검색할 예약자명을 입력해주세요.: ");  // input name to search
     fgets(searchName, MAX_LEN_NAME, stdin);
     searchName[strlen(searchName) - 1] = '\0';
 
     for (int i = 0; i < count; i++) {
-        if (strstr(r[i]->name, searchName)) {  // 이름을 찾았다면
-            if (searchCount == 0)              // 첫 번째 검색 결과
+        if (strstr(r[i]->name, searchName)) {  // if found name
+            if (searchCount == 0)              // if first result
                 printf("일련번호  예약자명\t 예약필드\t 예약시간\n");
             printf("%4d ", i + 1);
             ReadReservation(r[i]);
@@ -70,15 +85,16 @@ void SearchReservationName(Reserve *r[], int count) {  // 예약자 이름
         printf("검색 결과가 없습니다.\n");
 }
 
-void SearchReservationDateTime(Reserve *r[], int count) {  // 예약 날짜
+// search by reservation date and time
+void SearchReservationDateTime(Reserve *r[], int count) {
     DateTime searchDateTime;
     int searchCount = 0;
     while (getchar() != '\n')
         ;
     for (;;) {
-        printf("검색할 예약 시작시간을 입력해주세요(YYYYMMDD HH:MM): ");
+        printf("검색할 예약 시작시간을 입력해주세요(YYYYMMDD HH:MM): ");  // input dateTime to search
         SetDateTime(&searchDateTime);
-        if (!IsValidDate(&searchDateTime) || !IsValidTime(&searchDateTime)) {
+        if (!IsValidDate(&searchDateTime) || !IsValidTime(&searchDateTime)) {  // check dateTime is valid
             printf("입력값이 유효하지 않습니다.\n");
             continue;
         } else {
@@ -88,8 +104,8 @@ void SearchReservationDateTime(Reserve *r[], int count) {  // 예약 날짜
 
     for (int i = 0; i < count; i++) {
         if (CompareDate(&searchDateTime, &r[i]->startTime) == 0) {
-            if (CompareTime(&searchDateTime, &r[i]->startTime) != -1 && CompareTime(&searchDateTime, &r[i]->endTime) != 1) {  // 해당 시간 예약을 찾았다면
-                if (searchCount == 0)                                                                                         // 첫 번째 검색 결과
+            if (CompareTime(&searchDateTime, &r[i]->startTime) != -1 && CompareTime(&searchDateTime, &r[i]->endTime) != 1) {  // if found reservation with searchDateTime
+                if (searchCount == 0)                                                                                         // if first result
                     printf("일련번호  예약자명\t 예약필드\t 예약시간\n");
                 printf("%4d ", i + 1);
                 ReadReservation(r[i]);
@@ -101,15 +117,16 @@ void SearchReservationDateTime(Reserve *r[], int count) {  // 예약 날짜
         printf("검색 결과가 없습니다.\n");
 }
 
-void SearchReservationDate(Reserve *r[], int count) {  // 예약 날짜
+// search by reservation date
+void SearchReservationDate(Reserve *r[], int count) {
     DateTime searchDate;
     int searchCount = 0;
     while (getchar() != '\n')
         ;
     for (;;) {
-        printf("검색할 예약 날짜를 입력해주세요(YYYYMMDD): ");
+        printf("검색할 예약 날짜를 입력해주세요(YYYYMMDD): ");  // input date to search
         SetDate(&searchDate);
-        if (!IsValidDate(&searchDate)) {
+        if (!IsValidDate(&searchDate)) {  // check date is valid
             printf("입력값이 유효하지 않습니다.\n");
             continue;
         } else {
@@ -118,8 +135,8 @@ void SearchReservationDate(Reserve *r[], int count) {  // 예약 날짜
     }
 
     for (int i = 0; i < count; i++) {
-        if (CompareDate(&searchDate, &r[i]->startTime) == 0) {  // 해당 날짜 예약을 찾았다면
-            if (searchCount == 0)                               // 첫 번째 검색 결과
+        if (CompareDate(&searchDate, &r[i]->startTime) == 0) {  // if found reservation in searchDate
+            if (searchCount == 0)                               // if first result
                 printf("일련번호  예약자명\t 예약필드\t 예약시간\n");
             printf("%4d ", i + 1);
             ReadReservation(r[i]);
@@ -130,15 +147,16 @@ void SearchReservationDate(Reserve *r[], int count) {  // 예약 날짜
         printf("검색 결과가 없습니다.\n");
 }
 
-void SearchReservationTime(Reserve *r[], int count) {  // 예약 시간
+// search by reservation time
+void SearchReservationTime(Reserve *r[], int count) {
     DateTime searchTime;
     int searchCount = 0;
     while (getchar() != '\n')
         ;
     for (;;) {
-        printf("검색할 예약 시간를 입력해주세요(HH:MM): ");
+        printf("검색할 예약 시간를 입력해주세요(HH:MM): ");  // input time to search
         SetTime(&searchTime);
-        if (!IsValidTime(&searchTime)) {
+        if (!IsValidTime(&searchTime)) {  // check time is valid
             printf("입력값이 유효하지 않습니다.\n");
             continue;
         } else {
@@ -147,8 +165,8 @@ void SearchReservationTime(Reserve *r[], int count) {  // 예약 시간
     }
 
     for (int i = 0; i < count; i++) {
-        if (CompareTime(&searchTime, &r[i]->startTime) != -1 && CompareTime(&searchTime, &r[i]->endTime) != 1) {  // 해당 시간이 포함된 예약을 찾았다면
-            if (searchCount == 0)                                                                                 // 첫 번째 검색 결과
+        if (CompareTime(&searchTime, &r[i]->startTime) != -1 && CompareTime(&searchTime, &r[i]->endTime) != 1) {  // if found reservation include searchTime
+            if (searchCount == 0)                                                                                 // if first result
                 printf("일련번호  예약자명\t 예약필드\t 예약시간\n");
             printf("%4d ", i + 1);
             ReadReservation(r[i]);
@@ -159,14 +177,15 @@ void SearchReservationTime(Reserve *r[], int count) {  // 예약 시간
         printf("검색 결과가 없습니다.\n");
 }
 
-void SearchReservationField(Reserve *r[], int count) {  // 예약 장소
+// search by reservation field
+void SearchReservationField(Reserve *r[], int count) {
     enum Field searchField;
     int searchCount = 0;
     while (getchar() != '\n')
         ;
     for (;;) {
         PrintFieldList();
-        printf("검색할 예약 장소를 선택해주세요.: ");
+        printf("검색할 예약 장소를 선택해주세요.: ");  // input field to search
         scanf("%d", &searchField);
         if (searchField < 1 || searchField > NUM_FIELDS) {
             printf("입력값이 유효하지 않습니다.\n");
@@ -177,8 +196,8 @@ void SearchReservationField(Reserve *r[], int count) {  // 예약 장소
     }
 
     for (int i = 0; i < count; i++) {
-        if (searchField == r[i]->field) {  // 해당 장소 예약을 찾았다면
-            if (searchCount == 0)          // 첫 번째 검색 결과
+        if (searchField == r[i]->field) {  // if found reservation on searchField
+            if (searchCount == 0)          // if first result
                 printf("일련번호  예약자명\t 예약필드\t 예약시간\n");
             printf("%4d ", i + 1);
             ReadReservation(r[i]);
@@ -189,10 +208,11 @@ void SearchReservationField(Reserve *r[], int count) {  // 예약 장소
         printf("검색 결과가 없습니다.\n");
 }
 
-// File I/O Functions
 #define MAX_LEN_FILE_NAME 100
 #define MAX_LEN_DATA_STRING 1000
-void LoadFromFile(Reserve *r[], int *count, int max_n) {  // 파일 입력
+
+// File Input
+void LoadFromFile(Reserve *r[], int *count, int max_n) {
     char inputFileName[MAX_LEN_FILE_NAME];
     FILE *input = NULL;
 
@@ -204,12 +224,12 @@ void LoadFromFile(Reserve *r[], int *count, int max_n) {  // 파일 입력
 
     while (getchar() != '\n')
         ;
-    printf("불러 올 파일 이름을 입력해주세요.: ");
+    printf("불러 올 파일 이름을 입력해주세요.: "); // input filename to load
     fgets(inputFileName, MAX_LEN_FILE_NAME - 1, stdin);
     inputFileName[strlen(inputFileName) - 1] = '\0';
 
     input = fopen(inputFileName, "r");
-    if (input == NULL) {
+    if (input == NULL) { // fail to load input file
         printf("파일을 불러오는데 실패했습니다.\n");
         return;
     }
@@ -220,7 +240,7 @@ void LoadFromFile(Reserve *r[], int *count, int max_n) {  // 파일 입력
     while (!feof(input)) {
         r[i]->isValid = false;
 
-        fgets(dataString, MAX_LEN_DATA_STRING, input);
+        fgets(dataString, MAX_LEN_DATA_STRING, input); // read one line
 
         if (feof(input))  // if End of File
             break;
@@ -271,22 +291,24 @@ void LoadFromFile(Reserve *r[], int *count, int max_n) {  // 파일 입력
     printf("데이터 불러오기에 성공했습니다.\n");
 }
 
-void SaveAsFile(Reserve *r[], int count) {  // 파일 출력
+// File Output
+void SaveAsFile(Reserve *r[], int count) {
     char outputFileName[MAX_LEN_FILE_NAME];
     FILE *output = NULL;
 
     while (getchar() != '\n')
         ;
-    printf("내보낼 파일 이름을 입력해주세요.: ");
+    printf("내보낼 파일 이름을 입력해주세요.: "); // input filename to save
     fgets(outputFileName, MAX_LEN_FILE_NAME - 1, stdin);
     outputFileName[strlen(outputFileName) - 1] = '\0';
 
     output = fopen(outputFileName, "w");
-    if (output == NULL) {
+    if (output == NULL) { // fail to save file
         printf("파일을 내보내는데 실패했습니다.\n");
         return;
     }
 
+    // print to file
     for (int i = 0; i < count; i++) {
         if (r[i]->isValid == false) continue;
         fprintf(output, "%s,", r[i]->name);

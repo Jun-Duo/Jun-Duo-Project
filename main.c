@@ -1,47 +1,53 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-#include "reserve.h"
 #include "manager.h"
 #include "menu.h"
+#include "reserve.h"
 
 #define MAX_N 100
 
 int main() {
-
-    Reserve **p = (Reserve **)malloc(MAX_N * sizeof(Reserve *));
+    // Memory Allocation
+    Reserve **r = (Reserve **)malloc(MAX_N * sizeof(Reserve *));
     for (int i = 0; i < MAX_N; i++) {
-        p[i] = (Reserve *)malloc(MAX_N * sizeof(Reserve));
+        r[i] = (Reserve *)malloc(MAX_N * sizeof(Reserve));
     }
 
     int cnt = 0;
-    int stop = 0;
+    bool stop = false;
     while (!stop && cnt < MAX_N) {
         enum Menu menu = chooseMenu();
         switch (menu) {
             case LIST:
-                ListReservation(p, cnt);
+                ListReservation(r, cnt);
                 break;
             case CREATE:
-                CreateReservation(p, &cnt, MAX_N);
+                CreateReservation(r, &cnt, MAX_N);
                 break;
             case UPDATE:
-                UpdateReservation(p, cnt);
+                UpdateReservation(r, cnt);
                 break;
             case DELETE:
-                DeleteReservation(p, &cnt);
+                DeleteReservation(r, &cnt);
                 break;
             case SEARCH:
-                SearchReservation(p, cnt);
+                SearchReservation(r, cnt);
                 break;
             case LOAD:
-                LoadFromFile(p, &cnt, MAX_N);
+                LoadFromFile(r, &cnt, MAX_N);
                 break;
             case SAVE:
-                SaveAsFile(p, cnt);
+                SaveAsFile(r, cnt);
                 break;
             case QUIT:
-                stop = 1;
+                stop = true; // make stop
+                // Memory Deallocation
+                for (int i = 0; i < MAX_N; i++) {
+                    free(r[i]);
+                }
+                free(r);
                 break;
         }
     }

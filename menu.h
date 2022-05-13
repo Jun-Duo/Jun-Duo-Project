@@ -6,6 +6,7 @@
 // Menu Functions
 #define N_MENU 7
 
+// enum for menu
 enum Menu {
     QUIT = 0,
     LIST,
@@ -17,7 +18,7 @@ enum Menu {
     SAVE
 };
 
-
+// Print menu list
 void printMenu() {
     printf("\n");
     printf("[메뉴]\n");
@@ -31,17 +32,18 @@ void printMenu() {
     printf("0. 종료\n");
 }
 
+// input menu selection
 enum Menu chooseMenu() {
     enum Menu menu;
     for (;;) {
         printMenu();
         printf("-----------------\n");
-        printf("메뉴를 입력하시오: ");
+        printf("메뉴를 입력하시오: "); // input menu selection
         scanf("%d", &menu);
 
-        if (menu >= 0 && menu <= 7)
+        if (menu >= 0 && menu <= 7) // valid value
             return menu;
-        else
+        else // wrong value
             printf("잘못된 입력!\n");
     }
 }
