@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <time.h>
 
 // Structure of Date and Time
 typedef struct dt {
@@ -10,7 +11,14 @@ typedef struct dt {
     int dt_min;  /* minutes */
 } DateTime;
 
-void SetDateTime();
+void SetDateTime(DateTime *dt);
+void PrintDateTime(DateTime *dt);
+void CopyDateTime(DateTime *dt1, DateTime *dt2);
+bool IsValidTime(DateTime *dt);
+bool IsValidDate(DateTime *dt);
+bool IsFutureDateTime(DateTime *dt);
+void CalculateDateTime(DateTime *res, DateTime *dt, int min);
+int CompareDateTime(DateTime *dt1, DateTime *dt2);
 
 void SetDateTime(DateTime *dt) {
     scanf("%04d%02d%02d %02d:%02d", &dt->dt_year, &dt->dt_mon, &dt->dt_day, &dt->dt_hour, &dt->dt_min);
@@ -29,6 +37,12 @@ void CopyDateTime(DateTime *dt1, DateTime *dt2) {
 }
 
 bool IsValidTime(DateTime *dt) {
+    if (dt->dt_hour >= 0 && dt->dt_hour < 24) {
+        if (dt->dt_min >= 0 && dt->dt_min < 60) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool IsValidDate(DateTime *dt) {
@@ -38,12 +52,12 @@ bool IsValidDate(DateTime *dt) {
                 case 2:
                     if (dt->dt_year % 400 == 0 || (dt->dt_year % 100 != 0 && dt->dt_year % 4 == 0)) {  // if leap year
                         if (dt->dt_day <= 29) {
-                            return IsValidDate(dt);
+                            return true;
                         } else
                             return false;
                     } else {  // not leap year
                         if (dt->dt_day <= 28) {
-                            return IsValidDate(dt);
+                            return true;
                         } else
                             return false;
                     }
@@ -54,7 +68,7 @@ bool IsValidDate(DateTime *dt) {
                 case 9:
                 case 11:
                     if (dt->dt_day <= 30) {
-                        return IsValidDate(dt);
+                        return true;
                     } else
                         return false;
                     break;
@@ -67,7 +81,7 @@ bool IsValidDate(DateTime *dt) {
                 case 10:
                 case 12:
                     if (dt->dt_day <= 31) {
-                        return IsValidDate(dt);
+                        return true;
                     } else
                         return false;
                     break;
@@ -75,6 +89,30 @@ bool IsValidDate(DateTime *dt) {
         } else
             return false;
     } else
+        return false;
+}
+
+bool IsFutureDateTime(DateTime *dt) {
+    time_t now_t, reserve_t;
+    struct tm nowTime, reserveTime;
+
+    reserveTime.tm_year = dt->dt_year - 1900;
+    reserveTime.tm_mon = dt->dt_mon - 1;
+    reserveTime.tm_mday = dt->dt_day;
+    reserveTime.tm_hour = dt->dt_hour;
+    reserveTime.tm_min = dt->dt_min;
+    reserveTime.tm_sec = 0;
+
+    reserve_t = mktime(&reserveTime);
+
+    time(&now_t);
+    nowTime = *localtime(&now_t);
+
+    double diff_t = difftime(reserve_t, now_t);
+
+    if (diff_t > 0)
+        return true;
+    else
         return false;
 }
 
