@@ -113,22 +113,22 @@ void SearchReservationField(Reserve *r[], int count) { // 예약 장소
     char search_name[30];
     printf("찾을 예약 장소를 입력하시오. : 1. 평봉필드, 2. 히딩크풋살장");
     scanf("%d", &field_num);
-    if(field_num == 1){
-        strcpy(search_name, "PyeongBong_Field");
-    }
-    else if(field_num == 2){
-        strcpy(search_name, "Hiddink_Futsal_Field");
-    }
-    printf("\n번호  예약자명\t 예약필드\t 예약시간\n");
-    for(int i=0; i<count; i++){
-        if(strstr(r[i]->field, search_name)){//이름을 찾았다면
-            printf(" %d%10s\t%10s\t (", i+1, r[i]->field, fieldName[r[i]->field]);
-            PrintDateTime(&r[i]->startTime);
-            printf(" ~ ");
-            PrintDateTime(&r[i]->endTime);
-            printf(")\n");
-            flag++;
-        }
+    // if(field_num == 1){
+    //     strcpy(search_name, "PyeongBong_Field");
+    // }
+    // else if(field_num == 2){
+    //     strcpy(search_name, "Hiddink_Futsal_Field");
+    // }
+    // printf("\n번호  예약자명\t 예약필드\t 예약시간\n");
+    // for(int i=0; i<count; i++){
+    //     if(strstr(r[i]->field, search_name)){//이름을 찾았다면
+    //         printf(" %d%10s\t%10s\t (", i+1, r[i]->field, fieldName[r[i]->field]);
+    //         PrintDateTime(&r[i]->startTime);
+    //         printf(" ~ ");
+    //         PrintDateTime(&r[i]->endTime);
+    //         printf(")\n");
+    //         flag++;
+    //     }
     }
     if(flag == 0) printf("\t\t!!No search result!!\n");
 }
