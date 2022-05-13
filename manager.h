@@ -32,7 +32,7 @@ void SearchReservation(Reserve *r[], int count) {  // 메인 검색
             SearchReservationName(r, count);  // 예약자명
             break;
         case 2:
-            SearchReservationDateTime(r, count); // 예약 날짜 및 시간
+            SearchReservationDateTime(r, count);  // 예약 날짜 및 시간
             break;
         case 3:
             SearchReservationDate(r, count);  //예약 날짜
@@ -202,11 +202,13 @@ void LoadFromFile(Reserve *r[], int *count, int max_n) {  // 파일 입력
         return;
     }
 
+    while (getchar() != '\n')
+        ;
     printf("불러 올 파일 이름을 입력해주세요.: ");
     fgets(inputFileName, MAX_LEN_FILE_NAME - 1, stdin);
     inputFileName[strlen(inputFileName) - 1] = '\0';
-    
-    FILE *input = fopen(inputFileName, "r");
+
+    input = fopen(inputFileName, "r");
     if (input == NULL) {
         printf("파일을 불러오는데 실패했습니다.\n");
         return;
@@ -216,50 +218,54 @@ void LoadFromFile(Reserve *r[], int *count, int max_n) {  // 파일 입력
     char dataString[MAX_LEN_DATA_STRING];
 
     while (!feof(input)) {
+        r[i]->isValid = false;
+
         fgets(dataString, MAX_LEN_DATA_STRING, input);
 
-        if (feof(input)) // if End of File
+        if (feof(input))  // if End of File
             break;
-        
+
         // Tokenize dataString
-        char dataName[MAX_LEN_NAME] = strtok(dataString, ",");
-        char dataField[MAX_LEN_FIELD_NAME] = strtok(NULL, ",");
-        char dataStartTime[TIME_STR_LEN] = strtok(NULL, ",");
-        char dataEndTime[TIME_STR_LEN] = strtok(NULL, ",");
+        char *dataName = strtok(dataString, ",");
+        char *dataField = strtok(NULL, ",");
+        char *dataStartTime = strtok(NULL, ",");
+        char *dataEndTime = strtok(NULL, ",");
 
         // name
         strcpy(r[i]->name, dataName);
         // field
         r[i]->field = 0;
-        for (int i = 1; i <= NUM_FIELDS; i++) { // find field name
-            if (!strcmp(dataField, fieldName[i])) { // if found field name
-                r[i]->field = i;
+        for (int j = 1; j <= NUM_FIELDS; j++) {      // find field name
+            if (!strcmp(dataField, fieldName[j])) {  // if found field name
+                r[i]->field = j;
                 break;
             }
         }
         // startTime
-        char startYYYYMMDD[8] = strtok(dataStartTime, " ");
-        char startHH[2] = strtok(NULL, ":");
-        char startMM[2] = strtok(NULL, "\n");
-        r[i]->startTime->dt_year = atoi(startYYYYMMDD) / 10000;
-        r[i]->startTime->dt_mon = atoi(startYYYYMMDD) / 100 % 100;
-        r[i]->startTime->dt_day = atoi(startYYYYMMDD) % 100;
-        r[i]->startTime->dt_hour = atoi(startHH);
-        r[i]->startTime->dt_min = atoi(startMM);
+        char *startYYYYMMDD = strtok(dataStartTime, " ");
+        char *startHH = strtok(NULL, ":");
+        char *startMM = strtok(NULL, ",");
+        r[i]->startTime.dt_year = atoi(startYYYYMMDD) / 10000;
+        r[i]->startTime.dt_mon = atoi(startYYYYMMDD) / 100 % 100;
+        r[i]->startTime.dt_day = atoi(startYYYYMMDD) % 100;
+        r[i]->startTime.dt_hour = atoi(startHH);
+        r[i]->startTime.dt_min = atoi(startMM);
 
         // endTime
-        char endYYYYMMDD[8] = strtok(dataEndTime, " ");
-        char endHH[2] = strtok(NULL, ":");
-        char endMM[2] = strtok(NULL, "\n");
-        r[i]->startTime->dt_year = atoi(endYYYYMMDD) / 10000;
-        r[i]->startTime->dt_mon = atoi(endYYYYMMDD) / 100 % 100;
-        r[i]->startTime->dt_day = atoi(endYYYYMMDD) % 100;
-        r[i]->startTime->dt_hour = atoi(endHH);
-        r[i]->startTime->dt_min = atoi(endMM);
+        char *endYYYYMMDD = strtok(dataEndTime, " ");
+        char *endHH = strtok(NULL, ":");
+        char *endMM = strtok(NULL, "\n");
+        r[i]->endTime.dt_year = atoi(endYYYYMMDD) / 10000;
+        r[i]->endTime.dt_mon = atoi(endYYYYMMDD) / 100 % 100;
+        r[i]->endTime.dt_day = atoi(endYYYYMMDD) % 100;
+        r[i]->endTime.dt_hour = atoi(endHH);
+        r[i]->endTime.dt_min = atoi(endMM);
 
+        r[i]->isValid = true;
         i++;
         (*count)++;
     }
+    printf("데이터 불러오기에 성공했습니다.\n");
 }
 
 void SaveAsFile(Reserve *r[], int count) {  // 파일 출력
