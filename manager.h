@@ -11,8 +11,8 @@ void SearchReservationDate(Reserve *r[], int count);
 void SearchReservationTime(Reserve *r[], int count);
 void SearchReservationField(Reserve *r[], int count);
 
-int LoadFromFile(char *filename, Reserve *r[], int *count);
-int SaveAsFile(char *filename, Reserve *r[], int count);
+void LoadFromFile(Reserve *r[], int *count, int max_n);
+void SaveAsFile(Reserve *r[], int count);
 
 // Searching Data Functions
 void SearchReservation(Reserve *r[], int count) {  // 메인 검색
@@ -190,10 +190,79 @@ void SearchReservationField(Reserve *r[], int count) {  // 예약 장소
 }
 
 // File I/O Functions
-int LoadFromFile(char *filename, Reserve *r[], int *count) {  // 파일 입력
+#define MAX_LEN_FILE_NAME 100
+#define MAX_LEN_DATA_STRING 1000
+void LoadFromFile(Reserve *r[], int *count, int max_n) {  // 파일 입력
+    char inputFileName[MAX_LEN_FILE_NAME];
+    FILE *input = NULL;
+
+    // Check if out of range
+    if (*count >= max_n) {
+        printf("최대 예약 정보 수를 초과했습니다.\n");
+        return;
+    }
+
+    printf("불러 올 파일 이름을 입력해주세요.: ");
+    fgets(inputFileName, MAX_LEN_FILE_NAME - 1, stdin);
+    inputFileName[strlen(inputFileName) - 1] = '\0';
+    
+    FILE *input = fopen(inputFileName, "r");
+    if (input == NULL) {
+        printf("파일을 불러오는데 실패했습니다.\n");
+        return;
+    }
+
+    int i = *count;
+    char dataString[MAX_LEN_DATA_STRING];
+
+    while (!feof(input)) {
+        fgets(dataString, MAX_LEN_DATA_STRING, input);
+
+        if (feof(input)) // if End of File
+            break;
+        
+        // Tokenize dataString
+        char dataName[MAX_LEN_NAME] = strtok(dataString, ",");
+        char dataField[MAX_LEN_FIELD_NAME] = strtok(NULL, ",");
+        char dataStartTime[TIME_STR_LEN] = strtok(NULL, ",");
+        char dataEndTime[TIME_STR_LEN] = strtok(NULL, ",");
+
+        // name
+        strcpy(r[i]->name, dataName);
+        // field
+        r[i]->field = 0;
+        for (int i = 1; i <= NUM_FIELDS; i++) { // find field name
+            if (!strcmp(dataField, fieldName[i])) { // if found field name
+                r[i]->field = i;
+                break;
+            }
+        }
+        // startTime
+        char startYYYYMMDD[8] = strtok(dataStartTime, " ");
+        char startHH[2] = strtok(NULL, ":");
+        char startMM[2] = strtok(NULL, "\n");
+        r[i]->startTime->dt_year = atoi(startYYYYMMDD) / 10000;
+        r[i]->startTime->dt_mon = atoi(startYYYYMMDD) / 100 % 100;
+        r[i]->startTime->dt_day = atoi(startYYYYMMDD) % 100;
+        r[i]->startTime->dt_hour = atoi(startHH);
+        r[i]->startTime->dt_min = atoi(startMM);
+
+        // endTime
+        char endYYYYMMDD[8] = strtok(dataEndTime, " ");
+        char endHH[2] = strtok(NULL, ":");
+        char endMM[2] = strtok(NULL, "\n");
+        r[i]->startTime->dt_year = atoi(endYYYYMMDD) / 10000;
+        r[i]->startTime->dt_mon = atoi(endYYYYMMDD) / 100 % 100;
+        r[i]->startTime->dt_day = atoi(endYYYYMMDD) % 100;
+        r[i]->startTime->dt_hour = atoi(endHH);
+        r[i]->startTime->dt_min = atoi(endMM);
+
+        i++;
+        (*count)++;
+    }
 }
 
-int SaveAsFile(char *filename, Reserve *r[], int count) {  // 파일 출력
+void SaveAsFile(Reserve *r[], int count) {  // 파일 출력
 }
 
 #endif

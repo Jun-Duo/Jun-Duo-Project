@@ -35,10 +35,10 @@ int main() {
                 SearchReservation(p, cnt);
                 break;
             case LOAD:
-                LoadFromFile("input.txt", p, &cnt);
+                LoadFromFile(p, &cnt, MAX_N);
                 break;
             case SAVE:
-                SaveAsFile("output.txt", p, cnt);
+                SaveAsFile(p, cnt);
                 break;
             case QUIT:
                 stop = 1;

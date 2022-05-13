@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 
+#define TIME_STR_LEN 8 + 1 + 5 + 1
 // Structure of Date and Time
 typedef struct dt {
     int dt_year; /* year */
