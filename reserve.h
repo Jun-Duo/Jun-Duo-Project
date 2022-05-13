@@ -70,6 +70,10 @@ void CreateReservation(Reserve *r[], int *count, int max_n) {
             printf("입력값이 유효하지 않습니다.\n");
             continue;
         }
+        if (!IsFutureDateTime(&r[*count]->startTime)) {
+            printf("현재 시간보다 이후 시간을 입력해야 합니다.\n");
+            continue;
+        }
         int playTime;
         // Input playTime
         printf("몇 분 동안 빌리시겠습니까?(최대 %d분): ", RESERVE_TIME_LIMIT);
@@ -156,6 +160,10 @@ void UpdateReservation(Reserve *r[], int count) {
         SetDateTime(&r[updateIdx]->startTime);  // set start time
         if (!IsValidDate(&r[updateIdx]->startTime) || !IsValidTime(&r[updateIdx]->startTime)) {
             printf("입력값이 유효하지 않습니다.\n");
+            continue;
+        }
+        if (!IsFutureDateTime(&r[*count]->startTime)) {
+            printf("현재 시간보다 이후 시간을 입력해야 합니다.\n");
             continue;
         }
         int playTime;
