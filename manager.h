@@ -75,16 +75,15 @@ void SearchReservationDate(Reserve *r[], int count) { // 예약 날짜
     printf("찾을 예약 날짜를 입력하시오. : ");
     fgets(search_date,30,stdin);
     search_date[strlen(search_date) - 1] = '\0';
-    // printf("serach date : %s\n",search_date);
     printf("\n번호  예약자명\t 예약필드\t 예약날짜\n");
-    for(int i=0; i<count; i++){
-        if(strstr(r[i]->dt_year,search_date)){//이름을 찾았다면
-            printf(" %d%10s\t%10s\t (", i+1, r[i]->name, fieldName[r[i]->field]);
-            PrintDateTime(&r[i]->startTime);
-            printf(")\n");
-            flag++;
-        }
-    }
+    // for(int i=0; i<count; i++){
+    //     if(strstr(r[i]->dt_year,search_date)){//이름을 찾았다면
+    //         printf(" %d%10s\t%10s\t (", i+1, r[i]->name, fieldName[r[i]->field]);
+    //         PrintDateTime(&r[i]->startTime);
+    //         printf(")\n");
+    //         flag++;
+    //     }
+    // }
     if(flag == 0) printf("\t\t!!No search result!!\n");
 }
 
@@ -95,31 +94,35 @@ void SearchReservationTime(Reserve *r[], int count) { // 예약 시간
     printf("찾을 예약 시간을 입력하시오. : ");
     fgets(search_time,30,stdin);
     search_time[strlen(search_time) - 1] = '\0';
-    // printf("serach time : %s\n",search_time);
     printf("\n번호  예약자명\t 예약필드\t 예약시간\n");
-    for(int i=0; i<count; i++){
-        if(strstr(r[i]->startTime,search_time)){//이름을 찾았다면
-            printf(" %d%10s\t%10s\t (", i+1, r[i]->name, fieldName[r[i]->field]);
-            PrintDateTime(&r[i]->startTime);
-            printf(")\n");
-            flag++;
-        }
-    }
-    if(flag == 0) printf("\t\t!!No search result!!\n");
+    // for(int i=0; i<count; i++){
+    //     if(strstr(r[i]->startTime,search_time)){//이름을 찾았다면
+    //         printf(" %d%10s\t%10s\t (", i+1, r[i]->name, fieldName[r[i]->field]);
+    //         PrintDateTime(&r[i]->startTime);
+    //         printf(")\n");
+    //         flag++;
+    //     }
+    // }
+    // if(flag == 0) printf("\t\t!!No search result!!\n");
 }
 
 
 void SearchReservationField(Reserve *r[], int count) { // 예약 장소
-    char search_filed[30];
     int flag = 0;
-    getchar();
-    printf("찾을 예약자의 입력을 입력하시오. : ");
-    fgets(search_name,30,stdin);
-    search_name[strlen(search_name) - 1] = '\0';
+    int field_num;
+    char search_name[30];
+    printf("찾을 예약 장소를 입력하시오. : 1. 평봉필드, 2. 히딩크풋살장");
+    scanf("%d", &field_num);
+    if(field_num == 1){
+        strcpy(search_name, "PyeongBong_Field");
+    }
+    else if(field_num == 2){
+        strcpy(search_name, "Hiddink_Futsal_Field");
+    }
     printf("\n번호  예약자명\t 예약필드\t 예약시간\n");
     for(int i=0; i<count; i++){
-        if(strstr(r[i]->name,search_name)){//이름을 찾았다면
-            printf(" %d%10s\t%10s\t (", i+1, r[i]->name, fieldName[r[i]->field]);
+        if(strstr(r[i]->field, search_name)){//이름을 찾았다면
+            printf(" %d%10s\t%10s\t (", i+1, r[i]->field, fieldName[r[i]->field]);
             PrintDateTime(&r[i]->startTime);
             printf(" ~ ");
             PrintDateTime(&r[i]->endTime);
