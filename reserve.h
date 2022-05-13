@@ -66,7 +66,7 @@ void CreateReservation(Reserve *r[], int *count, int max_n) {
     for (;;) {
         printf("예약할 시작시간을 입력해주세요(YYYYMMDD HH:MM): ");
         SetDateTime(&r[*count]->startTime);  // set start time
-        if (!IsValidDate(&r[*count]->startTime) || !IsValidTime(&r[*count]->startTime)) {
+        if (!IsValidDate(&r[*count]->startTime)) {
             printf("입력값이 유효하지 않습니다.\n");
             continue;
         }
@@ -158,7 +158,7 @@ void UpdateReservation(Reserve *r[], int count) {
     for (;;) {
         printf("수정 예약할 시작시간을 입력해주세요(YYYYMMDD HH:MM): ");
         SetDateTime(&r[updateIdx]->startTime);  // set start time
-        if (!IsValidDate(&r[updateIdx]->startTime) || !IsValidTime(&r[updateIdx]->startTime)) {
+        if (!IsValidDate(&r[updateIdx]->startTime)) {
             printf("입력값이 유효하지 않습니다.\n");
             continue;
         }
