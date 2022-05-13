@@ -162,7 +162,7 @@ void UpdateReservation(Reserve *r[], int count) {
             printf("입력값이 유효하지 않습니다.\n");
             continue;
         }
-        if (!IsFutureDateTime(&r[*count]->startTime)) {
+        if (!IsFutureDateTime(&r[updateIdx]->startTime)) {
             printf("현재 시간보다 이후 시간을 입력해야 합니다.\n");
             continue;
         }
