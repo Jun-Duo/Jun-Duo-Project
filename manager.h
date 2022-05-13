@@ -5,6 +5,12 @@
 
 // Searching Data Functions
 void SearchReservation(Reserve *r[], int count) { // 메인 검색
+    printf("검색할 항목을 고르시오.\n");
+    printf("1. 예약자의 이름\n");
+    printf("2. 예약 날짜\n");
+    printf("3. 예약 시간\n");
+    printf("4. 예약 장소\n");
+
 }
 
 void SearchReservationName(Reserve *r[], int count) { // 예약자 이름
