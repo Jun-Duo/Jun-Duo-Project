@@ -29,6 +29,12 @@ void CopyDateTime(DateTime *dt1, DateTime *dt2) {
 }
 
 bool IsValidTime(DateTime *dt) {
+    if (dt->dt_hour >= 0 && dt->dt_hour < 24) {
+        if (dt->dt_min >= 0 && dt->dt_min < 60) {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool IsValidDate(DateTime *dt) {
