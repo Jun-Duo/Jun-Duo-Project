@@ -266,4 +266,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# input or output files
+*.txt
+*.csv
+
 # End of https://www.toptal.com/developers/gitignore/api/c,cmake,visualstudiocode,clion,windows,macos

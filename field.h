@@ -11,13 +11,23 @@ enum Field {
 };
 
 // Array of field name strings
-const char fieldName[NUM_FIELDS][MAX_LEN_FIELD_NAME] = {
+const char fieldName[NUM_FIELDS + 1][MAX_LEN_FIELD_NAME] = {
+    "",
     "평봉필드",
     "히딩크풋살장"};
 
+/*
+    Function Declarations
+*/
+void PrintFieldList();
+
+/*
+    Function Definitions
+*/
+// Print List of fields
 void PrintFieldList() {
-    for (int i = 0; i < NUM_FIELDS; i++) {
-        printf("%d - %s\n", i + 1, fieldName[i]);
+    for (int i = 1; i <= NUM_FIELDS; i++) {
+        printf("%d - %s\n", i, fieldName[i]);
     }
 }
 
